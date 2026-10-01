@@ -75,13 +75,35 @@ Reports + Decisões → /historico
 4. **Ações**: Dispara baseado em /alertas
 5. **Aprendizado**: Atualiza /historico com novas decisões
 
-## Próximas etapas
+## Status de Agentes
 
-⏳ **Aguardando contexto**. Emerson vai preencher cada pasta com:
-- Estrutura de dados real
-- Templates
-- Primeiros registros
+### 🟢 DREDGE (ATIVO)
+- Conectado ao: Google Data Studio
+- Skills: report-today, report-month, report-seller, report-funnel, alerts-check
+- Modo: Token-efficient com cache agressivo
+- Output: Markdown tabular (só dados, zero análise)
+
+### 🟡 SCOPE CODEX (BACKUP)
+- Aguardando: Integração Supabase
+- Função: Análise qualitativa de conversas
+
+### 🟡 UNDERTOW CODEX (BACKUP)
+- Aguardando: Validação de rubrica
+- Função: Auditoria de qualidade
+
+## Como usar DREDGE
+
+```
+"Que tal a performance de hoje?"
+→ report-today: GBV, Meta%, Ticket, FTR, Leads, Ligações, Meetings
+
+"Performance da Beatriz?"
+→ report-seller: Números individuais (GBV, Meta%, FTR, etc)
+
+"Tem algum alerta?"
+→ alerts-check: Só vermelho (vendedores <50% meta, leads >5d, FTR crítico)
+```
 
 ---
 
-*Ultimo update: 2026-10-01*
+*Ultimo update: 2026-10-01 | DREDGE LIVE*

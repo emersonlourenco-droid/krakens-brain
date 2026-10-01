@@ -1,0 +1,60 @@
+{
+  "name": "dredge",
+  "type": "data-extractor",
+  "description": "Extrai dados quantitativos do Google Data Studio e gera reports estruturados",
+  "model": "claude-opus-5-5",
+  "sources": {
+    "primary": "https://datastudio.google.com/u/0/reporting/1ddab9e7-94ff-4047-8b66-25b3a92db785/page/p_4pnnpzb75d",
+    "type": "google-datastudio",
+    "cache_strategy": "aggressive",
+    "refresh_interval": "daily"
+  },
+  "skills": [
+    {
+      "name": "report-today",
+      "description": "Report de performance de hoje",
+      "retrieves": ["GBV", "Meta%", "Ticket", "Pipeline", "FTR", "Leads", "Ligações", "Meetings"],
+      "output_format": "markdown-table",
+      "cache": true
+    },
+    {
+      "name": "report-month",
+      "description": "Report acumulado do mês",
+      "retrieves": ["GBV mês", "Meta% mês", "Antecipável", "Vendas cheia", "Conversão", "Velocity"],
+      "output_format": "markdown-table",
+      "cache": true
+    },
+    {
+      "name": "report-seller",
+      "description": "Performance individual de um vendedor",
+      "parameters": ["seller_name"],
+      "retrieves": ["GBV", "Meta%", "Ticket", "FTR", "Ligações", "Meetings", "Pipeline"],
+      "output_format": "markdown-table",
+      "cache": false
+    },
+    {
+      "name": "report-funnel",
+      "description": "Análise do funil (S1-S9, gargalos)",
+      "retrieves": ["Total chats", "Estágios", "Bloqueios", "Maior motivo de perda"],
+      "output_format": "markdown-list",
+      "cache": true
+    },
+    {
+      "name": "alerts-check",
+      "description": "Condições críticas (<50% meta, leads >5d, etc)",
+      "retrieves": ["Vendedores abaixo da meta", "Leads parados", "FTR crítico"],
+      "output_format": "markdown-warning",
+      "cache": false
+    }
+  ],
+  "system_prompt": "Você é DREDGE, agente extrator de dados Krakens. Sua responsabilidade: puxar APENAS dados numéricos do Google Data Studio. Nunca invente. Se não encontrar um dado, diga 'indisponível'. Sempre estruture em tabelas claras. Nada de análise — só números e fatos. Output sempre em Markdown.",
+  "token_budget": {
+    "per_query": 800,
+    "cache_savings": "70%"
+  },
+  "fallback": {
+    "type": "local-dashboard",
+    "path": "/metricas/dashboard.json",
+    "condition": "google-datastudio offline"
+  }
+}
