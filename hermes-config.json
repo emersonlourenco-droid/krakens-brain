@@ -1,0 +1,91 @@
+{
+  "name": "krakens-brain-tl",
+  "description": "Second Brain para Maestro TL - Krakens Performance OS",
+  "version": "1.0.0",
+  "integrations": {
+    "github": {
+      "enabled": true,
+      "repository": "krakens-brain",
+      "owner": "hermes-emerson",
+      "branch": "main",
+      "sync_interval": "daily",
+      "webhook_events": ["push"]
+    },
+    "hermes": {
+      "agent_type": "maestro-tl",
+      "access_pattern": "read-first",
+      "cache_strategy": "mapa-first",
+      "update_strategy": "agent-write"
+    },
+    "compose": {
+      "enabled": true,
+      "service": "github-krakens-brain"
+    }
+  },
+  "folders": {
+    "metricas": {
+      "type": "metrics",
+      "update_frequency": "real-time",
+      "primary_source": "dredge",
+      "schema": "dashboard.md"
+    },
+    "vendedores": {
+      "type": "profiles",
+      "update_frequency": "daily",
+      "primary_source": "scope-codex",
+      "schema": "_template.md"
+    },
+    "playbook": {
+      "type": "rules",
+      "update_frequency": "weekly",
+      "primary_source": "maestro",
+      "schema": "_template.md"
+    },
+    "funil": {
+      "type": "analysis",
+      "update_frequency": "real-time",
+      "primary_source": "undertow-codex",
+      "schema": "_template.md"
+    },
+    "historico": {
+      "type": "decisions",
+      "update_frequency": "on-action",
+      "primary_source": "maestro",
+      "schema": "_template.md"
+    },
+    "alertas": {
+      "type": "alerts",
+      "update_frequency": "real-time",
+      "primary_source": "dredge",
+      "schema": "_template.md"
+    },
+    "agentes": {
+      "type": "orchestration",
+      "update_frequency": "manual",
+      "primary_source": "maestro"
+    }
+  },
+  "access_control": {
+    "maestro_tl": {
+      "read": ["*"],
+      "write": ["historico", "alertas"],
+      "admin": false
+    },
+    "dredge": {
+      "read": ["metricas", "alertas"],
+      "write": ["metricas", "alertas"],
+      "admin": false
+    },
+    "scope_codex": {
+      "read": ["vendedores", "funil"],
+      "write": ["vendedores"],
+      "admin": false
+    },
+    "undertow_codex": {
+      "read": ["funil"],
+      "write": ["funil"],
+      "admin": false
+    }
+  },
+  "notes": "Criado em 2026-10-01. Aguardando preenchimento de contexto."
+}
