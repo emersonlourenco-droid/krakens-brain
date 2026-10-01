@@ -1,0 +1,780 @@
+{
+  "schema_version": "1.0",
+  "auditoria_data": "2026-10-01",
+  "escopo": "Regras comerciais e orquestração documental do Krakens; leitura local, sem portais, mensagens ou execução de ciclos. Existência de configuração não prova rotina ativa.",
+  "agentes_rodando": {
+    "valor": null,
+    "status": "ausente",
+    "motivo": "Inventário vivo não consultado nesta subtarefa; não inferir execução a partir de cards."
+  },
+  "agentes_documentados": [
+    {
+      "valor": {
+        "nome": "Dredge",
+        "responsabilidade": "Extrair quantitativos do Megazord e meetings do AloudRox; normalizar evidência sem decidir prioridade.",
+        "entradas": "Portais Megazord TL e Aloudrox Meets, filtros e períodos explícitos.",
+        "outputs": "data/inbox/megazord_*.txt; data/pack/pack.json; envelope com arquivos, períodos, parcialidade e mudanças de layout.",
+        "estado_execucao": "desconhecido"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/agents/DREDGE.md",
+        "linhas": [
+          5,
+          74
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": {
+        "nome": "Scope",
+        "responsabilidade": "Diagnóstico por vendedor: resultado, processo, produtividade, onde param os leads, perdas, hipótese com confiança, foco e compromisso anterior.",
+        "entradas": "regras.md, pack.json, compromissos.json; playbook para tom.",
+        "outputs": "output.json com time, vendedores, seller_actions, mensagem_canal, pedidos_ao_dredge.",
+        "estado_execucao": "desconhecido"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/agents/SCOPE.md",
+        "linhas": [
+          16,
+          78
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": {
+        "nome": "Undertow",
+        "responsabilidade": "Criticar hipótese, prioridade, ação x métrica, coerência, tom e viabilidade da meta; não substituir checagem aritmética.",
+        "entradas": "regras.md, pack.json, analysis.json, check.json, compromissos.json.",
+        "outputs": "output.json: aprovar/ajustar/refazer, críticas por vendedor e até cinco divergências ao Maestro.",
+        "estado_execucao": "desconhecido"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/agents/UNDERTOW.md",
+        "linhas": [
+          9,
+          49
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": {
+        "nome": "Prisma",
+        "responsabilidade": "Auditar atendimento e amostra de conversas: espera, organização, follow-up e discurso com evidência anonimizada.",
+        "entradas": "Omni TL e links extraídos; gargalo quantitativo vindo de Scope/Dredge.",
+        "outputs": "output.json campo report; evidências por conversa sem PII; relatório de ação, organização, processo e qualitativo.",
+        "estado_execucao": "desconhecido"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/agents/PRISMA.md",
+        "linhas": [
+          14,
+          188
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": {
+        "nome": "Maestro",
+        "responsabilidade": "Orquestrar, desafiar pelo menos uma vez a análise, decidir, registrar correções e entregar ao TL.",
+        "entradas": "summary → blockers → checagem → data.",
+        "outputs": "Decisão com número; ação por vendedor com prazo; recheck; ressalvas explícitas.",
+        "estado_execucao": "desconhecido"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/agents/MAESTRO.md",
+        "linhas": [
+          15,
+          53
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": {
+        "nome": "Checker",
+        "tipo": "script determinístico sem LLM",
+        "responsabilidade": "Conferir números, links, prazo e régua contra pack",
+        "output": "data/agents/check_TIMESTAMP.json",
+        "estado_execucao": "desconhecido"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/tools/krakens-cycle.sh",
+        "linhas": [
+          42,
+          49
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    }
+  ],
+  "orquestracao": {
+    "ordem_documentada_routing": {
+      "valor": {
+        "intraday": [
+          "dredge.extract",
+          "checker.run",
+          "scope.diagnose",
+          "maestro.decide"
+        ],
+        "manha": [
+          "dredge.extract_full",
+          "checker.run",
+          "scope.diagnose",
+          "undertow.critique",
+          "maestro.decide"
+        ],
+        "qualitativo": [
+          "prisma",
+          "scope cruza com números quando classificação de estoque",
+          "maestro"
+        ]
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/ROUTING.yaml",
+        "linhas": [
+          23,
+          47
+        ],
+        "data_documental": "2026-09-16"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "ordem_script": {
+      "valor": [
+        "Dredge extrai antes do script",
+        "motor determinístico com KRAKENS_LLM_MODE=off",
+        "build-pack",
+        "Scope",
+        "check-analysis após Scope",
+        "Undertow somente morning",
+        "dossie_latest.json e cópia timestamp",
+        "direcionamentos registrados como rascunho"
+      ],
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/tools/krakens-cycle.sh",
+        "linhas": [
+          2,
+          60
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "comunicacao": {
+      "valor": {
+        "canal": "maestri ask com timeout de 600 segundos para Scope/Undertow",
+        "transferencia": "Arquivos copiados às pastas de papel; retorno efetivo verificado por JSON válido no output.json",
+        "artefatos": [
+          "regras.md",
+          "playbook.md",
+          "pack.json",
+          "compromissos.json",
+          "analysis.json",
+          "check.json",
+          "data/agents/dossie_latest.json",
+          "data/agents/dossie_TIMESTAMP.json"
+        ],
+        "risco": "Script pode seguir com último snapshot após erro do motor; report precisa explicitar idade da fonte."
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/tools/krakens-cycle.sh",
+        "linhas": [
+          18,
+          60
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "horarios_routing": {
+      "valor": {
+        "operacao": "08:00–19:59",
+        "manha": "09:40",
+        "intraday": [
+          "12:00",
+          "15:00",
+          "18:00"
+        ],
+        "dias": "segunda a sábado",
+        "timezone": "America/Sao_Paulo"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/ROUTING.yaml",
+        "linhas": [
+          17,
+          21
+        ],
+        "data_documental": "2026-09-16"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "horarios_config": {
+      "valor": {
+        "morning": "08:30",
+        "intraday": "hora a hora, 10h a 18h",
+        "eod": "19:00",
+        "team_login": "10:00",
+        "janela_acao_min": 120
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/config/krakens.config.json",
+        "linhas": [
+          158,
+          182
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "comprovacao_ativa": {
+      "status": "ausente",
+      "valor": null,
+      "proximo_passo": "Inspecionar inventário do canvas e rotinas ativas; configuração de horário não prova execução."
+    },
+    "arquitetura_modular": {
+      "valor": {
+        "ordem": [
+          "Data Engineer",
+          "Data QA",
+          "Performance Analyst",
+          "Funnel Analyst",
+          "Intraday Commander",
+          "Seller Diagnostic",
+          "Critic/Auditor",
+          "Maestro decide",
+          "Action Planner",
+          "Reporter"
+        ],
+        "responsabilidades": {
+          "Data Engineer": "captura/normalização/snapshot/PII fora",
+          "Data QA": "atraso/duplicidade/fonte ausente/anomalias/roster/meta",
+          "Performance Analyst": "GBV/meta/ritmo/ticket/antecipável/conversão/FTR",
+          "Funnel Analyst": "estoque/idade/gargalo/listas de fechamento",
+          "Intraday Commander": "deltas e avaliação de ações",
+          "Seller Diagnostic": "hipóteses, alternativas e confiança",
+          "Action Planner": "responsável, leads, ação, prazo, métrica e recheck",
+          "Reporter": "relatórios markdown e JSON"
+        },
+        "persistencia": "SQLite com snapshots, sales, metrics, pipeline_stages, leads, dq_issues, findings, agent_runs, actions, action_checks e reports",
+        "nota": "Arquitetura documentada; não equivale a onze agentes de terminal ativos."
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/01-architecture.md",
+        "linhas": [
+          15,
+          69
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    }
+  },
+  "regras_playbook": {
+    "cadencia_diaria": {
+      "valor": {
+        "inicio": "~30 minutos para responder fila do mais antigo ao recente; em seguida FUP de Link Enviado de ontem",
+        "ate_11_12h": "FUP ativos de baixo para cima, depois inativos; monitorar maior espera",
+        "12h": "Ligações a Link Enviado e Fechamento que receberam FUP",
+        "15h": "Segundo FUP do dia",
+        "16h": "Rodada de ligação se movimento lento",
+        "17h30": "Terceiro FUP",
+        "total_prescrito": "4 FUPs por mensagem + 2 rodadas de ligação",
+        "retomada": "Atividade atrasada volta na próxima janela; contato personalizado."
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/02-playbook-comercial.md",
+        "linhas": [
+          94,
+          108
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "cadencia_dias": {
+      "valor": {
+        "condicao": "S7 + S1 > 50% do estoque",
+        "toques": [
+          "D0",
+          "D+1",
+          "D+3",
+          "D+5"
+        ],
+        "canais": "Variar canal; ligação obrigatória no segundo toque"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/CLASSIFICACAO_FECHAMENTO.md",
+        "linhas": [
+          35,
+          38
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "cadencia_pos_link": {
+      "valor": {
+        "recebimento_abertura_link_min": [
+          5,
+          15
+        ],
+        "novo_contato_mesmo_dia_ideal_min": [
+          30,
+          60
+        ],
+        "retorno_combinado": "Respeitar data prometida pelo lead",
+        "ultima_mensagem_lead_sem_resposta": "FUP crítico",
+        "lead_sem_resposta_1_3h": "Sinal de auditoria contextual, não regra cega",
+        "jornada_referencia": "10h–19h"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/agents/PRISMA.md",
+        "linhas": [
+          59,
+          78
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "ligacoes_por_vendedor_dia": {
+      "valor": {
+        "quantidade_ligacoes": null,
+        "rodadas": 2,
+        "explicacao": "Documento prescreve duas rodadas; não define quota numérica de chamadas por vendedor."
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/02-playbook-comercial.md",
+        "linhas": [
+          94,
+          104
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente",
+      "proximo_passo": "TL definir quota se desejada por tipo de dia, sem converter rodadas em número inventado."
+    },
+    "fechar_ganho": {
+      "valor": {
+        "processo": "Pedir venda, enviar link, acompanhar e confirmar pagamento",
+        "link_enviado_equivale_venda": false,
+        "evento_tecnico_de_ganho": null,
+        "lacuna": "Não foi localizado critério formal único de status pago/aprovado para marcar ganho em todos os sistemas."
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/02-playbook-comercial.md",
+        "linhas": [
+          19,
+          26
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "encerrar": {
+      "valor": {
+        "gatilho": "Mais de cinco dias sem engajamento",
+        "excecoes": [
+          "Lead respondendo",
+          "Lead pediu prazo para pagar"
+        ],
+        "acao": "Avançar ou encerrar após avaliar contexto; não encerrar automaticamente por idade de criação",
+        "limite_carteira": 150
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/config/krakens.config.json",
+        "linhas": [
+          244,
+          252
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "encerrar_s8": {
+      "valor": {
+        "criterio": "Sem interação há mais de 5 dias e ao menos 4 toques",
+        "responsavel_decisao": "Prisma aponta caso; TL decide, conforme card Prisma 35–38",
+        "nota": "Há critério mais estrito na taxonomia do que no gatilho genérico; respeitar exceções e evidência."
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/CLASSIFICACAO_FECHAMENTO.md",
+        "linhas": [
+          20,
+          24
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "abaixo_60_meta": {
+      "valor": null,
+      "status": "ausente",
+      "contexto": "Não localizada regra específica para vendedor abaixo de 60% da meta de faturamento. Não confundir com 60% de venda cheia.",
+      "escopo_busca": [
+        "docs",
+        "config",
+        "ROUTING.yaml"
+      ],
+      "proximo_passo": "Definir plano pelo gap e prazo após confirmar meta de outubro; aplicar árvore de processo/produtividade/discurso, não regra percentual inexistente."
+    },
+    "venda_cheia": {
+      "valor": {
+        "regua_setembro": "60% até 20/09; 65% a partir de 21/09",
+        "abaixo_regua": "Somente venda cheia, sem recorrência",
+        "vigencia_outubro": "Não confirmada"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/GLOBAL_PROTOCOL.md",
+        "linhas": [
+          36,
+          52
+        ],
+        "data_documental": "2026-09-16"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "arvore_prioridade": {
+      "valor": [
+        "FTR D0 >10 min e pipe >150: limpeza curta 30–45 min e depois ligação",
+        "FTR bom e sem venda: ligação em Link Enviado antes de Fechamento; limpeza após 17h",
+        "Estoque quente alto e sem venda: pedir pagamento e registrar objeção",
+        "Venda cheia abaixo da régua: suspender recorrência",
+        "Venda abaixo de R$2450: autorização do TL",
+        "Depois de 15h: ligação quente antes de limpeza, mesmo com FTR ruim; limpeza após 17h30",
+        "Ajustar expectativa de ligação ao tipo de dia: lançamento/disparo versus pós-lançamento"
+      ],
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/GLOBAL_PROTOCOL.md",
+        "linhas": [
+          46,
+          55
+        ],
+        "data_documental": "2026-09-16"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "compromisso": {
+      "valor": {
+        "rascunho_nao_cobravel": true,
+        "gatilho_cobranca": "TL confirma envio via confirm-sent",
+        "escalada": [
+          "Primeiro descumprimento: antes/depois com número",
+          "Segundo ciclo seguido sem execução: 1:1 e prazo curto",
+          "Terceiro ciclo: escalar ao TL como gestão"
+        ]
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/GLOBAL_PROTOCOL.md",
+        "linhas": [
+          57,
+          65
+        ],
+        "data_documental": "2026-09-16"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    }
+  },
+  "metricas_e_metas": {
+    "ftr": {
+      "valor": {
+        "significado_documentado": "Tempo de primeira resposta do vendedor, não First Touch to Revenue",
+        "alvo_minutos": 10,
+        "operador": "<",
+        "metrica_painel": "FTR Mean (min); mediana como apoio",
+        "para_cobranca": "D0; mensal somente contexto",
+        "first_touch_to_revenue": null,
+        "lacuna": "Não há duração até receita instrumentada nesses documentos; também não confundir média de FTR com maior espera em aberto."
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/02-playbook-comercial.md",
+        "linhas": [
+          7,
+          14
+        ],
+        "data_documental": "2026-09-14"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "definicoes_config": {
+      "valor": {
+        "gbv": "Soma Valor Total da Venda, exclui reembolsadas",
+        "ticket": "GBV / quantidade de vendas",
+        "conversao": "vendas / atendimentos recebidos no período",
+        "antecipavel": "Valor Venda Cheia / Valor Total da Venda; explicitamente hipótese a confirmar",
+        "lead_ativo": "Situação aberto: conversou nas últimas 24h"
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/config/krakens.config.json",
+        "linhas": [
+          99,
+          106
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "alvos_locais": {
+      "valor": {
+        "meta_time_brl": 526848,
+        "meta_individual_brl": 123480,
+        "meta_provisoria_time_brl": 708808,
+        "nota": "Não substituir oficial até planilha atualizada; números legados de setembro, não comprovam outubro",
+        "ticket_min_brl": 2450,
+        "conversao_min": 0.07,
+        "antecipavel_min": 0.65,
+        "ftr_max_min": 10
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/config/krakens.config.json",
+        "linhas": [
+          81,
+          97
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "roster": {
+      "valor": {
+        "atuais_config": [
+          "Fabiano Martins",
+          "Beatriz Dutra",
+          "Jesiel Silva",
+          "Ana Correia",
+          "João Carvalho",
+          "Ana Reczcki",
+          "Tiago Tsuyoshi"
+        ],
+        "total_config": 7,
+        "nota": "Cards listam cinco; apelido Ana não pode absorver Ana Reczcki. Histórico não pode sumir do total."
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/config/krakens.config.json",
+        "linhas": [
+          7,
+          79
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    "funil": {
+      "valor": {
+        "estagios": [
+          "Abertura",
+          "Conexão",
+          "Entrega",
+          "Fechamento",
+          "Link Enviado",
+          "FUP"
+        ],
+        "quantidade": 6,
+        "sem_etapa": "-",
+        "conexao_alias": "Sondagem",
+        "quentes": [
+          "Fechamento",
+          "Link Enviado"
+        ],
+        "bottleneck_config": {
+          "desvio_share_vs_time_pp": 8,
+          "min_leads": 5,
+          "stuck_days": 2,
+          "opening_share_critical": 0.25
+        }
+      },
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/config/krakens.config.json",
+        "linhas": [
+          131,
+          156
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    }
+  },
+  "inconsistencias_documentais": [
+    {
+      "valor": "ROUTING posiciona checker antes de Scope; script e regras posicionam após. Para descrever implementação, citar script; alinhar documentos antes de automação.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/ROUTING.yaml",
+        "linhas": [
+          23,
+          28
+        ],
+        "data_documental": "2026-09-16"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": "GLOBAL proíbe Prisma acessar Omni, mas card Prisma explicitamente exige Omni TL; routing manda varredura de estoque e card limita amostra a 10 conversas por vendedor. Conflito de escopo; cobertura amostral não pode virar censo.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/GLOBAL_PROTOCOL.md",
+        "linhas": [
+          12,
+          16
+        ],
+        "data_documental": "2026-09-16"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": "Envelope schema não aceita Prisma nem tarefas qualitativas, enquanto protocolo inclui Prisma. generated_at schema exige HH:MM, protocolo exemplifica data e hora completas.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/contracts/envelope.schema.json",
+        "linhas": [
+          5,
+          11
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": "GLOBAL usa expressão maior tempo para FTR; config define média e mediana. Maior espera corrente é indicador separado.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/GLOBAL_PROTOCOL.md",
+        "linhas": [
+          36,
+          44
+        ],
+        "data_documental": "2026-09-16"
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": "Playbook tolera aproximadamente 15 min durante FUP, mas régua formal é <10 min. Não apresentar tolerância como SLA validado.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/02-playbook-comercial.md",
+        "linhas": [
+          97,
+          104
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": "Playbook contém quatro FUPs totais, porém três rodadas explicitamente numeradas no cronograma; não inventar quarta hora.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/02-playbook-comercial.md",
+        "linhas": [
+          94,
+          104
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": "Cards/Protocolo mantêm cinco vendedores, config tem sete; risco de extração incompleta.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/agents/DREDGE.md",
+        "linhas": [
+          8,
+          25
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": "Horários divergem entre ROUTING (09:40 e 12/15/18), config (08:30, hora a hora 10–18,19) e arquitetura (08:30,09/11/13/15/17,19). Rotina ativa precisa consulta específica.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/01-architecture.md",
+        "linhas": [
+          56,
+          57
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    },
+    {
+      "valor": "Escada do playbook usa segundo descumprimento no mesmo dia e feedback formal ao virar dia; GLOBAL usa segundo ciclo e terceiro ciclo. Não afirmar execução atual sem confirmação.",
+      "status": "confirmado_documental",
+      "fonte": {
+        "arquivo": "/Users/emerson/krakens-os/docs/02-playbook-comercial.md",
+        "linhas": [
+          208,
+          213
+        ],
+        "data_documental": null
+      },
+      "vigencia_em_2026_10_01": "não revalidada operacionalmente"
+    }
+  ],
+  "proximos_passos_priorizados": [
+    {
+      "prioridade": 1,
+      "acao": "Validar meta, régua de venda cheia e roster de outubro antes de calcular atingimento de hoje.",
+      "motivo": "Virada de mês; documentos contêm valores e regras de setembro."
+    },
+    {
+      "prioridade": 2,
+      "acao": "Consultar agentes e rotinas ativas para separar desenho documental de operação.",
+      "motivo": "Não afirmar que um card está rodando."
+    },
+    {
+      "prioridade": 3,
+      "acao": "Conciliar fonte e denominador da conversão; separar GBV bruto, líquido e antecipável.",
+      "motivo": "Definições documentais são conflitantes com nomenclaturas de dashboard."
+    },
+    {
+      "prioridade": 4,
+      "acao": "Formalizar evento de ganho e quota de ligações se a gestão precisar desses limites.",
+      "motivo": "Lacunas encontradas; duas rodadas não são duas chamadas."
+    },
+    {
+      "prioridade": 5,
+      "acao": "Consolidar regras de cadência, encerramento e contrato Prisma, preservando exceções e evidência.",
+      "motivo": "Conflitos impedem auditoria determinística confiável."
+    }
+  ]
+}

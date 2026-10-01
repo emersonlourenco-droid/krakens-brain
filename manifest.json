@@ -1,0 +1,40 @@
+{
+  "data_referencia": "2026-10-01",
+  "workspace": "Empresa",
+  "status": "parcial_com_lacunas_explicitadas",
+  "arquivo_principal": "empresa.knowledge-base.json",
+  "publicado_no_github": false,
+  "validacao": {
+    "json_parseavel": true,
+    "oito_secoes": true,
+    "inventario_reconciliado": true,
+    "revisao_independente_realizada": true
+  },
+  "arquivos": [
+    {
+      "arquivo": "README.md",
+      "bytes": 1568,
+      "sha256": "48dd8a201205d0f060ec54d2176138fe20d0ddd3842429aeed5f797aeb6a66c0"
+    },
+    {
+      "arquivo": "empresa.knowledge-base.json",
+      "bytes": 453075,
+      "sha256": "3b751942318aea1b99a414cab233c7b3ab1d352b049a2da9d9f5198c9e1eb701"
+    },
+    {
+      "arquivo": "historico-vendedores.json",
+      "bytes": 324254,
+      "sha256": "0c94309efebe4dc8f2c75af4fed20c33ab9151d92d5f7adadd535be2312573fe"
+    },
+    {
+      "arquivo": "inventario_empresa_20261001.txt",
+      "bytes": 3319,
+      "sha256": "b71bbe3bc5b7e76ee2240602d889b705130c502df9a493936a153b409e1d9f58"
+    },
+    {
+      "arquivo": "regras-agentes.json",
+      "bytes": 27198,
+      "sha256": "9d38decd3d66c6ce9bf95d713d4d6d716fa17705c247d57a154a57bf9e36805c"
+    }
+  ]
+}
