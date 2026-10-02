@@ -1,114 +1,132 @@
-# Padrões Telegram — @Krakensaloudbot
+# Telegram @Krakensbot — Padrões de Resposta
 
-## Quando Aciona DREDGE (Números)
+## Princípio
 
-✅ **DREDGE é acionado automaticamente** quando você pergunta sobre:
+Bot responde **números E qualitativo quando você pedir**.  
+Nunca aciona por iniciativa própria.
+
+---
+
+## Agora (Phase 1 — Números)
+
+### ✅ Você pede NÚMEROS
 
 ```
 "Como tá o time?"
-"Qual é a meta de hoje?"
-"Performance da Beatriz?"
-"Tem alerta?"
-"Quantas ligações?"
-"Qual é o funil?"
-"Ticket médio?"
-"FTR de hoje?"
-```
-
-Qualquer coisa sobre **números, performance, métricas** → DREDGE
-
----
-
-## Quando NÃO Aciona DREDGE (Conversas)
-
-❌ **NÃO aciona DREDGE** para:
-
-```
-"Oi bot"
-"Tudo bem?"
-"Me ajuda com algo"
-"O que você faz?"
-"Explica isso pra mim"
-```
-
-Qualquer coisa que **não é sobre números** → responde normalmente ou rota pra outro agente
-
----
-
-## Fluxo
-
-```
-Pergunta no Telegram
-    ↓
-É sobre NÚMEROS/PERFORMANCE?
-    ├─ SIM → Chama DREDGE (via BigQuery Bridge)
-    │        Retorna tabela + alertas + insights
-    │
-    └─ NÃO → Responde normalmente
-             Ou rota pra outro agente conforme necessário
-```
-
----
-
-## Exemplos
-
-### ✅ Aciona DREDGE
-
-```
-"Como tá o time?" 
-→ DREDGE puxa /krakens/hoje
-→ Retorna tabela com todos vendedores
+→ Bot chama DREDGE
+→ Retorna tabela + alertas + insights
 
 "Performance da Beatriz?"
-→ DREDGE puxa /krakens/vendedor/Beatriz
-→ Retorna números últimos 7 dias
+→ Bot chama DREDGE
+→ Retorna números (7 dias, gargalo, etc)
 
 "Qual é o gargalo?"
-→ DREDGE puxa /krakens/funil
-→ Retorna distribuição S1-S9 + onde tá parado
+→ Bot chama DREDGE
+→ Retorna funil + onde está parado
 ```
 
-### ❌ NÃO Aciona DREDGE
+### ❌ Você pede QUALITATIVO (ainda não está pronto)
+
+```
+"Por que João tá com FTR alto?"
+→ Bot responde: "Isso precisa de análise qualitativa. 
+   Estou preparando o SCOPE CODEX para isso. 
+   Por enquanto só tenho números. Quer que eu traga?"
+```
+
+### ❌ Mensagem genérica (não especifica)
 
 ```
 "Oi"
-→ Responde: "E aí! Sou o bot dos Krakens. Posso puxar dados de performance, números do time, etc."
+→ Bot responde normalmente (não aciona agente)
 
-"Como vai?"
-→ Responde: "Tudo certo! Qualquer dúvida sobre números do time, é só chamar"
+"Tudo bem?"
+→ Bot responde normalmente
 
-"Me ajuda a treinar vendedor"
-→ Responde: "Isso é com o pessoal de operação. Precisa de dados? Posso trazer números"
+"Me ajuda"
+→ Bot responde: "Com dados numéricos posso ajudar. 
+   Quer saber como tá o time?"
 ```
 
 ---
 
-## Implementação
+## Depois (Phase 2 — Qualitativo)
 
-No `telegram-bridge.py`:
+Quando SCOPE CODEX estiver pronto:
 
-```python
-def is_dredge_question(message):
-    """Detecta se pergunta é sobre números"""
-    keywords = [
-        'time', 'performance', 'meta', 'quanto', 'qual', 
-        'hoje', 'semana', 'mês', 'gbv', 'ticket', 'ftr',
-        'ligações', 'meetings', 'conversão', 'funil', 'alerta',
-        'vendedor', 'beatriz', 'joão', 'tiago', 'ana', 'jesiel'
-    ]
-    return any(kw in message.lower() for kw in keywords)
-
-# Se é pergunta sobre números:
-if is_dredge_question(user_message):
-    response = call_dredge(user_message)
-else:
-    response = "Resposta genérica ou não aplica DREDGE"
 ```
+"Por que João tá com FTR alto?"
+→ Bot chama SCOPE CODEX
+→ Retorna análise: "Abertura dele tem 2 padrões diferentes, 
+  áudio é 60seg (muito longo), cadência é 1/dia (baixa)"
+
+"Análise da Beatriz"
+→ Bot chama SCOPE CODEX
+→ Retorna: "Beatriz tá com padrão bom em abertura, 
+  áudio 25seg (objetivo), cadência 4/dia (alta)"
+```
+
+---
+
+## Fluxo de Decisão
+
+```
+Mensagem no Telegram
+    ↓
+É pergunta específica sobre números?
+    ├─ SIM → Chama DREDGE
+    │        Retorna: tabela + alertas + insights
+    │
+É pergunta específica sobre qualitativo?
+    ├─ SIM → Chama SCOPE CODEX (se pronto)
+    │        Retorna: análise qualitativa
+    │        Se não pronto: "Ainda não tá pronto"
+    │
+É mensagem genérica?
+    └─ SIM → Responde normalmente
+             Não aciona agente
+```
+
+---
+
+## Exemplos de Perguntas
+
+### NÚMEROS (Aciona DREDGE)
+
+- "Como tá o time?"
+- "Qual é a meta de hoje?"
+- "Performance da Beatriz?"
+- "Tem alerta?"
+- "Quantas ligações hoje?"
+- "Qual é o funil?"
+- "Ticket médio da semana?"
+- "FTR de hoje?"
+- "GBV do mês?"
+- "Taxa de conversão?"
+
+### QUALITATIVO (Aciona SCOPE CODEX quando pronto)
+
+- "Por que João tá com FTR alto?"
+- "Análise da Beatriz"
+- "Como melhorar o áudio de Pedro?"
+- "Qual vendedor tá com melhor processo?"
+- "Por que conversão caiu?"
+- "Aberturas estão boas?"
+
+### GENÉRICO (Resposta normal)
+
+- "Oi"
+- "Tudo bem?"
+- "O que você faz?"
+- "Me ajuda"
+- "Como você funciona?"
 
 ---
 
 ## Regra de Ouro
 
-**DREDGE = números**  
-**Tudo mais = outros agentes ou resposta padrão**
+🔴 **Nunca aciona agente por iniciativa**  
+✅ **Só quando você pedir especificamente**  
+📊 **Números**: DREDGE (agora)  
+📝 **Qualitativo**: SCOPE CODEX (depois)
 
