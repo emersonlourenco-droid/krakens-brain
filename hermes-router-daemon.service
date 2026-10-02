@@ -1,0 +1,21 @@
+[Unit]
+Description=Hermes Router Daemon — Roteamento Automático MAESTRO
+After=network.target
+
+[Service]
+Type=simple
+User=hermes
+WorkingDirectory=/opt/hermes
+ExecStart=/usr/bin/python3 /opt/hermes/router/hermes-router-daemon.py
+Restart=on-failure
+RestartSec=10
+
+Environment="HERMES_URL=https://hermes-agent-qst4.srv2026911.hstgr.cloud"
+Environment="HERMES_API_KEY="
+Environment="CHECK_INTERVAL=30"
+
+StandardOutput=append:/var/log/hermes-router.log
+StandardError=append:/var/log/hermes-router.log
+
+[Install]
+WantedBy=multi-user.target
