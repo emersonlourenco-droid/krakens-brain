@@ -1,12 +1,19 @@
-# Mapa do Krakens Brain 🗺️
+# MAPA.md — Navegação do Krakens Brain 🗺️
 
-**Guia de navegação e estrutura do conhecimento**
+Este é o **segundo cérebro** de Emerson (TL) e seus agentes: DREDGE, SCOPE CODEX, UNDERTOW CODEX, MAESTRO.
 
-## O que é este brain?
+## Bootloader (Leia Neste Ordem)
 
-Este é o **segundo cérebro** do agente TL (Team Lead) - Maestro. Ele contém todo o contexto operacional da Krakens Performance OS.
+1. **AGENTS.md** — contrato operacional
+2. **SOUL.md** — identidade de DREDGE
+3. **USER.md** — quem é Emerson
+4. **MAPA.md** ← você está aqui
+5. **hermes-config.json** — integração com Hermes
+6. **memory/** — decisões curadas (se autorizado)
 
-## Estrutura de pastas
+Não carregue tudo. Root files são roteadores; detalhes entram sob demanda.
+
+## Estrutura Completa
 
 ### 📊 `/metricas`
 **O que tem**: KPIs do dia, meta, performance, ticket médio, GBV, funil
@@ -106,4 +113,39 @@ Reports + Decisões → /historico
 
 ---
 
-*Ultimo update: 2026-10-01 | DREDGE LIVE*
+## Como Agentes Leem Este Brain
+
+### DREDGE (Quantitativo)
+
+1. Leia SOUL.md (identidade)
+2. Leia AGENTS.md (ciclo de decisão)
+3. Consulte skill relevante (`report-today`, `report-month`, etc)
+4. Busque em `/metricas` ou Google Data Studio
+5. Estruture em Markdown tabular
+6. Atualize `/metricas` e `/alertas`
+
+### MAESTRO (Você)
+
+1. Leia AGENTS.md + SOUL.md + USER.md
+2. Leia MAPA.md (você está aqui)
+3. Chame DREDGE via `@krakens-dredge` [pergunta]
+4. Interprete + decida + aja
+5. Atualize `/historico` com decisão
+
+### SCOPE CODEX (Qualitativo — BACKUP)
+
+1. Leia SOUL.md (quando ativar)
+2. Consulte `/vendedores` e `/funil`
+3. Analise conversas em Supabase
+4. Atualize scores de qualidade
+
+### UNDERTOW CODEX (Auditoria — BACKUP)
+
+1. Leia SOUL.md
+2. Valide rubrica de qualidade
+3. Atualize `/funil` com findings
+4. Dispare alertas se necessário
+
+---
+
+*Última atualização: 2026-10-02 | DREDGE + MEMORIA CURADA ATIVA*
