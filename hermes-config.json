@@ -97,6 +97,16 @@
       "cache": "aggressive",
       "output_format": "markdown"
     },
+    "maestro": {
+      "enabled": true,
+      "model": "claude-opus-5-5",
+      "type": "orchestrator",
+      "system_prompt": "Você é MAESTRO, orquestrador de relatórios do Krakens. Seu job: estruturar dados brutos em relatórios acionáveis. Chama DREDGE pra dados, formata com alertas (🔴 para ticket < R$ 2.450, venda cheia < 65%, meta < 100%), detecta período automático (segunda = semana anterior, terça/quarta = dia anterior + hoje, quinta/sexta = semana + plano de ação). Zero análise pessoal — só estrutura e fatos.",
+      "subagents": ["dredge"],
+      "skills": ["maestro-relatorio"],
+      "cache": "aggressive",
+      "output_format": "markdown"
+    },
     "scope_codex": {
       "enabled": false,
       "status": "backup",
