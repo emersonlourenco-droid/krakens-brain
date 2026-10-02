@@ -1,0 +1,18 @@
+[Unit]
+Description=Krakens DREDGE Telegram Bridge
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/krakens-brain
+Environment="PATH=/usr/local/bin:/usr/bin"
+EnvironmentFile=/opt/krakens-brain/.env
+ExecStart=/usr/bin/python3 /opt/krakens-brain/telegram-bridge.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
